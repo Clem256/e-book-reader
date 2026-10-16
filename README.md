@@ -1,4 +1,123 @@
-# Liseuse
+<p align="center">
+  <b>Language / Langue :</b>&nbsp;&nbsp;
+  <a href="#english">🇬🇧 English</a>&nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="#français">🇫🇷 Français</a>
+</p>
+
+---
+
+<span id="english"></span>
+# Liseuse (English)
+
+A Python PDF reader.
+
+- **PyMuPDF** renders each page as an image: no PDF JavaScript is executed.
+- **PySide6** provides the user interface.
+- A **JSON** file stores the library, the last read page, and preferences.
+
+## Installation
+
+Python 3.9 or newer.
+
+```bash
+pip install -r requirements.txt
+```
+
+## Launch
+
+```bash
+python run.py                  # opens the library
+python run.py my_book.pdf      # opens a PDF directly
+python -m liseuse              # equivalent to run.py (from this folder)
+```
+
+## Features
+
+- Card-based library view (cover, title, progress bar), with search and sorting (recently read, title, progress).
+- Add individual PDFs or entire folders, or drag and drop into the window.
+- Right-click context menu on a book: open, rename, export a sanitized copy, mark as unread, remove.
+- Light and dark themes.
+- Fit to page, fit to width, or free zoom; two-page spread; right-to-left reading mode.
+- Table of contents in a collapsible side panel.
+- Automatically resumes at the last read page.
+- Export a sanitized copy of the PDF (removes JavaScript, attachments, links, and automatic actions).
+- Window size and position are remembered.
+
+## Controls
+
+### Keyboard
+
+| Key | Action |
+|---|---|
+| `←` / `→`, `PgUp` / `PgDn`, `Space`, `Backspace` | Previous / next page (`←` and `→` are swapped in right-to-left mode) |
+| `Home` / `End` | First / last page |
+| `Ctrl` + `+` / `-` | Zoom in / out |
+| `F` / `W` | Fit to page / fit to width |
+| `D` | Two-page view |
+| `T` | Toggle table of contents |
+| `N` | Toggle theme |
+| `F11` | Fullscreen |
+| `Ctrl` + `E` | Export sanitized copy |
+| `Ctrl` + `,` | Settings |
+| `Esc` | Back to library (or exit fullscreen) |
+
+### Mouse
+
+- **Click on page edges**: previous / next page (adjustable area).
+- **Click in center**: toggle toolbar visibility.
+- **Scroll wheel**: change page, or scroll if zoomed in.
+- **Ctrl + scroll wheel**: zoom.
+- **Drag**: pan across the page when zoomed in.
+
+## Settings
+
+Accessible via `Ctrl+,` or the ⚙ button, with immediate effect:
+
+- **Appearance**: theme, UI font size, page drop shadow.
+- **Reading**: fit mode, two-page view, right-to-left, zoom step, hide toolbars on open.
+- **Navigation**: edge clicks, click zone width, scroll wheel behavior.
+- **General**: reopen last book on launch, clear cover cache.
+
+## Data Storage
+
+Everything is stored in `/liseuse/saved_data`:
+
+- `data.json`: preferences, library, reading progress.
+- `covers/`: cached cover thumbnails (safe to delete).
+
+## Project Structure
+
+```text
+liseuse_app/
+├── run.py                  # launcher
+└── liseuse/
+    ├── app.py              # wires up Storage → Settings → Library → MainWindow
+    ├── config.py           # paths, constants, defaults
+    ├── core/               # logic, no Qt widgets
+    │   ├── storage.py      # atomic JSON, debounced saving
+    │   ├── settings.py     # preferences + changed(key, value) signal
+    │   ├── library.py      # books, progress, sorting, filtering
+    │   ├── pdf_tools.py    # covers, sanitized copy, page count
+    │   └── reader_state.py # current page, two-page mode, TOC, scale calculation
+    └── ui/
+        ├── main_window.py  # coordinates pages, toolbars, shortcuts, fullscreen
+        ├── library_page.py # library view + card rendering
+        ├── reader_page.py  # reading viewport, zoom, navigation bar
+        ├── toc_dock.py     # table of contents panel
+        ├── settings_dialog.py
+        ├── page_widgets.py # PageView, PageScroll
+        ├── rendering.py    # PyMuPDF → QPixmap (pages, shadow)
+        └── theme.py        # themes and stylesheet
+```
+
+<br>
+
+<p align="right"><a href="#english">⬆ Back to English</a> • <a href="#français">⬇ Aller au Français</a></p>
+
+---
+
+<span id="français"></span>
+# Liseuse (Français)
 
 Liseuse PDF en Python.
 
@@ -10,13 +129,13 @@ Liseuse PDF en Python.
 
 Python 3.9 ou plus récent.
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
 ## Lancement
 
-```
+```bash
 python run.py                  # ouvre la bibliothèque
 python run.py mon_livre.pdf    # ouvre directement un PDF
 python -m liseuse              # équivalent de run.py (depuis ce dossier)
@@ -78,7 +197,7 @@ Tout est stocké dans `/liseuse/saved_data` :
 
 ## Structure du code
 
-```
+```text
 liseuse_app/
 ├── run.py                  # lanceur
 └── liseuse/
@@ -101,3 +220,6 @@ liseuse_app/
         └── theme.py        # thèmes et feuille de style
 ```
 
+<br>
+
+<p align="right"><a href="#english">⬆ Aller à la version anglaise</a> • <a href="#français">⬆ Retour en haut de la version française</a></p>
